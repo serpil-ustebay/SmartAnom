@@ -81,3 +81,32 @@ if __name__ == '__main__':
     print(f"Results and summary saved to {results_file}")
 
 
+# ================================
+# Plot Accuracy
+# ================================
+
+
+if "Accuracy_mean" in summary_df.columns:
+    plt.figure(figsize=(10, 6))
+
+    # Benzersiz dataset ve algoritmaları bul
+    datasets = summary_df["Dataset"].unique()
+    algorithms = summary_df["Algorithm"].unique()
+
+    # Her veri seti için çubuk çiz
+    for ds in datasets:
+        subset = summary_df[summary_df["Dataset"] == ds]
+        accuracies = subset["Accuracy_mean"].values
+        plt.bar([f"{ds}-{alg}" for alg in subset["Algorithm"]], accuracies, label=ds)
+
+    plt.xticks(rotation=45, ha="right")
+    plt.ylabel("Accuracy (Mean)")
+    plt.title("Mean Accuracy Across Datasets and Algorithms (MBAS)")
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
+    plt.tight_layout()
+    plt.savefig(f"sbas_accuracy.png")
+    plt.show()
+
+else:
+    print(" 'accuracy_mean' column not found in summary_df. Check metric names in PerformanceMetrics.")
+

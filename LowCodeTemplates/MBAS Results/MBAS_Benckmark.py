@@ -4,7 +4,7 @@ from Model.Scores.MBAS import MBAS
 from Model.iForests import gif, eif
 from Model.iForests.FariCutForest import FairCutForest
 from Model.iForests.SciForest import SCiForest
-from PaperTables.Datasets.ReadDatasets import load_dataset, dataset_paths
+from LowCodeTemplates.Datasets.ReadDatasets import load_dataset, dataset_paths
 
 
 # -----------------------------
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     n_repeats = 20
     sample_size = 256
     nTree = 100
-    result_file = "MBAS_Bench_results.xlsx"
+    result_file = "MBAS_results.xlsx"
     all_results_total = []
 
     for ds_name, func in datasets.items():
@@ -69,3 +69,34 @@ if __name__ == '__main__':
         summary_df.to_excel(writer, sheet_name="Summary", index=False)
 
     print(f"Results and summary saved to {result_file}")
+
+
+# ================================
+# Plot Accuracy
+# ================================
+
+
+if "Accuracy_mean" in summary_df.columns:
+    plt.figure(figsize=(10, 6))
+
+    # Benzersiz dataset ve algoritmaları bul
+    datasets = summary_df["Dataset"].unique()
+    algorithms = summary_df["Algorithm"].unique()
+
+    # Her veri seti için çubuk çiz
+    for ds in datasets:
+        subset = summary_df[summary_df["Dataset"] == ds]
+        accuracies = subset["Accuracy_mean"].values
+        plt.bar([f"{ds}-{alg}" for alg in subset["Algorithm"]], accuracies, label=ds)
+
+    plt.xticks(rotation=45, ha="right")
+    plt.ylabel("Accuracy (Mean)")
+    plt.title("Mean Accuracy Across Datasets and Algorithms (MBAS)")
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
+    plt.tight_layout()
+    plt.savefig(f"mbas_accuracy.png")
+    plt.show()
+
+else:
+    print(" 'accuracy_mean' column not found in summary_df. Check metric names in PerformanceMetrics.")
+

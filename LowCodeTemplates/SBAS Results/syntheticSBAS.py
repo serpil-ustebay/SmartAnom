@@ -1,7 +1,7 @@
 import pandas as pd
 
 from Model.Scores import PerformanceMetrics
-from Model.Scores.MBAS import MBAS
+from Model.Scores.SBAS import SBAS
 from Data.CreateSyntheticData import createMoons, createCircles, createBlobs, createSpiral, \
     createSinusoidalData, createHelix
 from Model.iForests import gif, eif
@@ -9,16 +9,30 @@ from Model.iForests.FariCutForest import FairCutForest
 from Model.iForests.SciForest import SCiForest
 
 thresholds = [0.998, 0.995, 0.99, 0.98, 0.95, 0.90, 0.85]
-n_repeats = 3
+n_repeats = 20
 sample_size = 256
 nTree = 100
 
-def evaulate_mbas(model, X, y):
-    paths = model.predict(X)
-    y_pred = MBAS.predict(paths)
+def evaulate_sbas(model, X, y, threshold, majority):
+    path_len = model.compute_paths_all_tree(X)
+    y_pred = SBAS.predict(path_len, threshold=threshold, majority=majority)
     metrics = PerformanceMetrics.compute_metrics(y, y_pred)
     df_metrics = pd.DataFrame([metrics])
+    df_metrics['Threshold'] = threshold
+    df_metrics['Majority'] = majority
     return df_metrics
+
+def gridSearchSBAS(model, X_train, y_train, metric='F1 Score'):
+    all_results_list = []
+    for threshold in thresholds:
+        for majority in [3, 5, 10]:
+            result = evaulate_sbas(model=model, X=X_train, y=y_train, threshold=threshold,
+                                   majority=majority)
+            all_results_list.append(result)
+    all_results_df = pd.concat(all_results_list, ignore_index=True)
+    all_results_df = all_results_df.sort_values(by=metric, ascending=False)
+    best_result = all_results_df.iloc[[0]].copy()
+    return best_result
 
 dataset_generators = {
     "Moons": createMoons,
@@ -29,7 +43,7 @@ dataset_generators = {
     "Helix": createHelix
 }
 
-excel_file = "Tables/MBAS_results.xlsx"
+excel_file = "Tables/SBAS_sentetik.xlsx"
 all_results_total = []
 
 for ds_name, func in dataset_generators.items():
@@ -49,11 +63,11 @@ for ds_name, func in dataset_generators.items():
         clf_fair.fit(X_train)
 
         # Grid search SBAS
-        if_sb = evaulate_mbas(clf_IF, X_train, y_train)
-        eif_sb = evaulate_mbas(clf_EIF, X_train, y_train)
-        gif_sb = evaulate_mbas(clf_GIF, X_train, y_train)
-        sci_sb = evaulate_mbas(clf_Sci, X_train, y_train)
-        fair_sb = evaulate_mbas(clf_fair, X_train, y_train)
+        if_sb = gridSearchSBAS(clf_IF, X_train, y_train)
+        eif_sb = gridSearchSBAS(clf_EIF, X_train, y_train)
+        gif_sb = gridSearchSBAS(clf_GIF, X_train, y_train)
+        sci_sb = gridSearchSBAS(clf_Sci, X_train, y_train)
+        fair_sb = gridSearchSBAS(clf_fair, X_train, y_train)
 
         for df, alg in zip([if_sb, eif_sb, gif_sb, sci_sb, fair_sb],
                            ["iForest", "EIF", "GIF", "SCiForest", "FairCutForest"]):
@@ -75,3 +89,32 @@ with pd.ExcelWriter(excel_file) as writer:
     summary_df.to_excel(writer, sheet_name="Summary", index=False)
 
 print(f"Results and summary saved to {excel_file}")
+
+
+# ================================
+# Plot Accuracy
+# ================================
+
+if "Accuracy_mean" in summary_df.columns:
+    plt.figure(figsize=(10, 6))
+
+    # Benzersiz dataset ve algoritmaları bul
+    datasets = summary_df["Dataset"].unique()
+    algorithms = summary_df["Algorithm"].unique()
+
+    # Her veri seti için çubuk çiz
+    for ds in datasets:
+        subset = summary_df[summary_df["Dataset"] == ds]
+        accuracies = subset["Accuracy_mean"].values
+        plt.bar([f"{ds}-{alg}" for alg in subset["Algorithm"]], accuracies, label=ds)
+
+    plt.xticks(rotation=45, ha="right")
+    plt.ylabel("Accuracy (Mean)")
+    plt.title("Mean Accuracy Across Datasets and Algorithms (MBAS)")
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
+    plt.tight_layout()
+    plt.savefig(f"sbas_accuracy.png")
+    plt.show()
+
+else:
+    print(" 'accuracy_mean' column not found in summary_df. Check metric names in PerformanceMetrics.")
