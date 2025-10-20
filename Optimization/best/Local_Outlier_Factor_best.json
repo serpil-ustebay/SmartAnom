@@ -1,0 +1,11 @@
+{
+    "model": "Local Outlier Factor",
+    "best_params": {
+        "n_neighbors": 35,
+        "leaf_size": 30,
+        "metric": "minkowski",
+        "contamination": 0.15
+    },
+    "best_score": 0.863,
+    "metric": "Accuracy"
+}

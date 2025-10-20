@@ -1,0 +1,6 @@
+{
+    "model": "Generalized Isolation Forest",
+    "best_params": null,
+    "best_score": -Infinity,
+    "metric": "accuracy"
+}

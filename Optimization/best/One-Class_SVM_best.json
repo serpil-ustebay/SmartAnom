@@ -1,0 +1,10 @@
+{
+    "model": "One-Class SVM",
+    "best_params": {
+        "kernel": "rbf",
+        "nu": 0.01,
+        "gamma": "scale"
+    },
+    "best_score": 0.75,
+    "metric": "Accuracy"
+}

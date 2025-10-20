@@ -1,0 +1,12 @@
+{
+    "model": "Isolation Forest",
+    "best_params": {
+        "n_trees": 50,
+        "sample_size": 128,
+        "contamination": 0.05,
+        "threshold": 0.95,
+        "majority": 7
+    },
+    "best_score": 0.75,
+    "metric": "Accuracy"
+}

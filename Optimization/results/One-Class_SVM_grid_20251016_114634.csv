@@ -1,0 +1,3 @@
+kernel,nu,gamma,Accuracy
+rbf,0.01,scale,0.75
+rbf,0.05,scale,0.713
