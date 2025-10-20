@@ -9,7 +9,7 @@ It enables rapid benchmarking, hyperparameter optimization, explainability (XAI)
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 - **Unified GUI Interface:**  
   Load datasets, generate synthetic data, train models, and visualize results without coding.
@@ -33,14 +33,14 @@ It enables rapid benchmarking, hyperparameter optimization, explainability (XAI)
 
 ---
 
-## ⚙️ Installation Guide
+# Installation Guide
 
 SmartAnom is designed to run smoothly on Python **3.10+**.  
 Follow the detailed steps below to set up your environment and start the GUI application.
 
 ---
 
-### 🧩 1️⃣ Clone the Repository
+### 1️⃣ Clone the Repository
 
 Open a terminal (or PowerShell on Windows) and run:
 
@@ -48,16 +48,16 @@ Open a terminal (or PowerShell on Windows) and run:
 git clone https://github.com/serpil-ustebay/SmartAnom.git
 cd SmartAnom
 
-###🧩 2️⃣ Create and Activate a Virtual Environment
-🔸 On Windows (PowerShell or CMD):
+###2️⃣ Create and Activate a Virtual Environment
+On Windows (PowerShell or CMD):
 python -m venv smartanom
 smartanom\Scripts\activate
 
-🔸 On Linux / macOS:
+On Linux / macOS:
 python3 -m venv smartanom
 source smartanom/bin/activate
 
-###3️⃣ Upgrade pip and Install Dependencies
+##3️⃣ Upgrade pip and Install Dependencies
 
 - Ensure you have the latest pip and setuptools:
 
