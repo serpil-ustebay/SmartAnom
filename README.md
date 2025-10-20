@@ -9,7 +9,7 @@ It enables rapid benchmarking, hyperparameter optimization, explainability (XAI)
 
 ---
 
-## Key Features
+## 🔹 Key Features
 
 - **Unified GUI Interface:**  
   Load datasets, generate synthetic data, train models, and visualize results without coding.
@@ -33,62 +33,124 @@ It enables rapid benchmarking, hyperparameter optimization, explainability (XAI)
 
 ---
 
-# Installation Guide
+## ⚙️ Installation Guide
 
 SmartAnom is designed to run smoothly on Python **3.10+**.  
 Follow the detailed steps below to set up your environment and start the GUI application.
 
 ---
 
-### 1️⃣ Clone the Repository
-
-Open a terminal (or PowerShell on Windows) and run:
+### 🧩 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/serpil-ustebay/SmartAnom.git
 cd SmartAnom
+```
 
-###2️⃣ Create and Activate a Virtual Environment
-On Windows (PowerShell or CMD):
+---
+
+### 🧩 2️⃣ Create and Activate a Virtual Environment
+
+It’s recommended to create an isolated environment named **smartanom** for this project.
+
+#### 🔸 On Windows (PowerShell or CMD):
+```bash
 python -m venv smartanom
 smartanom\Scripts\activate
+```
 
-On Linux / macOS:
+#### 🔸 On Linux / macOS:
+```bash
 python3 -m venv smartanom
 source smartanom/bin/activate
+```
 
-##3️⃣ Upgrade pip and Install Dependencies
+Once activated, you should see `(smartanom)` at the beginning of your terminal prompt:
 
-- Ensure you have the latest pip and setuptools:
+```
+(smartanom) D:\SmartAnom>
+```
 
-- pip install --upgrade pip setuptools wheel
+---
 
+### 🧩 3️⃣ Upgrade pip and Install Dependencies
 
-- Then install all required libraries:
+```bash
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+```
 
-- pip install -r requirements.txt
+If you don’t have `requirements.txt` yet, manually install essentials:
 
+```bash
+pip install numpy pandas matplotlib scikit-learn tensorflow shap tk
+```
 
-- If you want, you can manually install the essentials:
+💡 *Note:* On some Linux systems, you may need to install Tkinter separately:
 
-- pip install numpy pandas matplotlib scikit-learn tensorflow shap tk
+```bash
+sudo apt-get install python3-tk
+```
 
+---
 
-- Note: On some Linux systems, you may need to install Tkinter separately:
-  sudo apt-get install python3-tk
+### 🧩 4️⃣ Verify Installation
 
-###4️⃣ Verify Installation
--Check that all modules were installed successfully:
+```bash
+python -m pip list
+```
 
--python -m pip list
+---
 
--You should see packages such as numpy, pandas, scikit-learn, tensorflow, and shap listed.
+### 🧩 5️⃣ Run SmartAnom
 
-###🧩 5️⃣ Run SmartAnom
-
-Once everything is ready, launch the graphical interface:
-
+```bash
 python main.py
+```
 
+After running this command, the **SmartAnom GUI** window will appear. You can load datasets, select models, tune parameters, and visualize results interactively.
 
+---
 
+### 🧩 6️⃣ (Optional) Deactivate the Environment
+
+```bash
+deactivate
+```
+
+To reactivate later:
+
+```bash
+smartanom\Scripts\activate       # Windows
+# or
+source smartanom/bin/activate      # Linux/macOS
+```
+
+---
+
+## 🧠 Citation
+
+```bibtex
+@software{ustebay2025smartanom,
+  author       = {Serpil Üstebay},
+  title        = {SmartAnom: A Low-Code/No-Code Anomaly Detection Framework},
+  year         = {2025},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17376652},
+  url          = {https://github.com/serpil-ustebay/SmartAnom}
+}
+```
+
+---
+
+## 📜 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## 💬 Contact
+
+**Author:** Dr. Serpil Üstebay  
+📧 serpil.ustebay@domain.com  
+🔗 [GitHub Profile](https://github.com/serpil-ustebay)
